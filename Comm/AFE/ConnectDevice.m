@@ -24,6 +24,7 @@
                             % Acquire_tWs(), StopAcquisition(). This functions 
                             % has been moved to COMM/AFE folder, into this new script.
                             
+% 2015-12-4 / Ricardo Garcia / Added compatibility for Quaser Boards.
 
 % 20xx-xx-xx / Author  / Comment
 
@@ -44,8 +45,12 @@ function obj = ConnectDevice(handles)
     
     % Delete previous connection objects
     if exist('obj')
-        fclose(obj);
-        delete(obj);
+        if strcmp (ComPortType, 'QC')
+            hil_close(handles.obj);
+        else
+            fclose(handles.obj);
+            delete(handles.obj);
+        end
     end
 
     %%%%% WiFi %%%%%
@@ -75,14 +80,24 @@ function obj = ConnectDevice(handles)
             obj.InputBufferSize = sT*sF*nCh*2;
         end
     end     
-
+    %%%%% QC %%%%%
+    if strcmp(ComPortType, 'QC')
+        %%%%% Quanser Q4 %%%%%
+        if strcmp(deviceName, 'QuanserQ4')
+            board_type = 'q4';      % Board type
+            board_id = '0';         % Board number
+            % Open QC board
+            obj = hil_open(board_type, board_id);
+        end
+    end
     % Open the connection
-    fopen(obj);
-
-    % Read available data and discard it
-    if obj.BytesAvailable > 1
-        fread(obj,obj.BytesAvailable,'uint8');       
-    end    
-%     disp(obj);
-    
+    if ~strcmp(ComPortType, 'QC')
+        fopen(obj);
+        
+        % Read available data and discard it
+        if obj.BytesAvailable > 1
+            fread(obj,obj.BytesAvailable,'uint8');       
+        end    
+%       disp(obj);
+    end   
 end

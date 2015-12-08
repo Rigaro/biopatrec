@@ -24,18 +24,18 @@
                             % Acquire_tWs(), StopAcquisition(). This functions 
                             % has been moved to COMM/AFE folder, into this new script.
 
+% 2015-12-4 / Ricardo Garcia / Added compatibility for Quaser Boards.
 % 20xx-xx-xx / Author  / Comment
 
 
 
 % It acquire tWs samples from the selected device
-function cData = Acquire_tWs(deviceName, obj, nCh, tWs)
+function cData = Acquire_tWs(deviceName, obj, nCh, tWs, sF)
  
     cData     = zeros(tWs,nCh);                                            % this is the data structure that the function must return
     ampPP = 0.0005;
     offVector = 0:nCh-1;
     offVector = offVector .* ampPP;
-    
     
     %%%%% ADS1299 %%%%%
     if strcmp(deviceName, 'ADS1299')
@@ -64,5 +64,11 @@ function cData = Acquire_tWs(deviceName, obj, nCh, tWs)
             end
         end 
    end
-   
+   %%%%% Quanser Q4 %%%%%
+   if strcmp(deviceName, 'QuanserQ4')  
+       qCh = 0:nCh-1;          % Quanser Channels
+       clock = 0;              % HARDWARE_CLOCK_0
+       cData = hil_read_analog_buffer(obj,clock,sF,tWs,qCh);
+       cData = cData';         % Matrix transpose
+   end
 end

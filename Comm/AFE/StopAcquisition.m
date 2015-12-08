@@ -24,6 +24,8 @@
                             % Acquire_tWs(), StopAcquisition(). This functions 
                             % has been moved to COMM/AFE folder, into this new script.
 
+% 2015-12-4 / Ricardo Garcia / Added compatibility for Quaser Boards.
+
 % 20xx-xx-xx / Author  / Comment
 
 
@@ -41,6 +43,11 @@ function StopAcquisition(deviceName, obj)
     if strcmp(deviceName, 'ADS1299')
         fwrite(obj,'G','char');                                        % Stop the aquisition  ´
         fclose(obj);                                                   % Close connection
+    end
+    
+    %%%%% QuanserQ4 %%%%%
+    if strcmp(deviceName, 'QuanserQ4')
+        hil_close(obj);
     end
         
 end

@@ -158,12 +158,11 @@ function [cdata, sF, sT] = FastRecordingSession(varargin)
         cData = zeros(tWs, nCh);  
 
         for timeWindowNr = 1:sT/tW
-            cData = Acquire_tWs(deviceName, obj, nCh, tWs);    % acquire a new time window of samples  
+            cData = Acquire_tWs(deviceName, obj, nCh, tWs, sF);    % acquire a new time window of samples  
             acquireEvent.Data = cData;
             RecordingSession_ShowData(0, acquireEvent);            % plot data and add cData to allData vector
             samplesCounter = samplesCounter + tWs;
         end
-
         % Stop acquisition
         StopAcquisition(deviceName, obj);  
     end

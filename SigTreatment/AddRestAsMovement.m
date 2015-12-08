@@ -33,7 +33,7 @@ function sigTreated = AddRestAsMovement(sigTreated, recSession)
     nR      = recSession.nR;
     nM      = recSession.nM;
     tdata   = recSession.tdata;
-     
+
     % Collect the 50% to 75% of rest in between each contraction per each
     % movement
     for ex = 1 : nM
@@ -48,7 +48,6 @@ function sigTreated = AddRestAsMovement(sigTreated, recSession)
         end
         trData(:,:,ex) = tempdata;
     end
-    
     % Gather the required amount of data for a movement
     % The rest data set is made with contributions from all movements rest
     % period
@@ -66,7 +65,7 @@ function sigTreated = AddRestAsMovement(sigTreated, recSession)
     is = 1;
     fs = sampXmov;
     for ex = 1 : nM
-        restData = [restData ; trData(is:fs,:,ex)];         
+        restData = [restData ; trData(is:fs,:,ex)];   
     end
     
     % If the rest data set wasn't completed from the information of all
@@ -75,7 +74,7 @@ function sigTreated = AddRestAsMovement(sigTreated, recSession)
     if size(restData,1) ~= totSamp
         restData = [restData ; trData(end-sd+1:end,:,1)];
     end
-
+    
     %Random selection of the sets to be use
 
 %     trDL = size(trData,1);

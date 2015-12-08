@@ -187,7 +187,11 @@ function handlesX = RealtimePatRec(patRecX, handlesX)
 
         % Delete connection object
         if isfield(handles,'obj')
-            delete(handles.obj);
+            if strcmp (ComPortType, 'QC')
+                hil_close(handles.obj);
+            else
+                delete(handles.obj);
+            end
         end
 
         % Connect the chosen device, it returns the connection object
@@ -199,7 +203,7 @@ function handlesX = RealtimePatRec(patRecX, handlesX)
 
         for timeWindowNr = 1:sT/tW
 
-            cData = Acquire_tWs(deviceName, obj, nCh, tWs);            % acquire a new time window of samples
+            cData = Acquire_tWs(deviceName, obj, nCh, tWs, sF);            % acquire a new time window of samples
             acquireEvent.Data = cData;
             RealtimePatRec_OneShot(0, acquireEvent);                       
         end

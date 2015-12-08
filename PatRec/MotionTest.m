@@ -257,8 +257,8 @@ for t = 1 : trials
             else
                 
                 % Prepare handles for next function calls
-                handles.deviceName  = deviceName;
-                handles.ComPortType = ComPortType;
+                handles.deviceName  = deviceName
+                handles.ComPortType = ComPortType
                 if strcmp (ComPortType, 'COM')
                     handles.ComPortName = patRec.comn;
                 end
@@ -275,7 +275,7 @@ for t = 1 : trials
 
                 for timeWindowNr = 1:sT/tW
 
-                    cData = Acquire_tWs(deviceName, obj, nCh, tWs);            % acquire a new time window of samples
+                    cData = Acquire_tWs(deviceName, obj, nCh, tWs, sF);            % acquire a new time window of samples
                     acquireEvent.Data = cData;
                     MotionTest_OneShot(0, acquireEvent);                       
                 end
